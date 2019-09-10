@@ -4,6 +4,3 @@ gensim_model = gensim.models.KeyedVectors.load_word2vec_format(gensim_model, bin
 gensim_vector = gensim_model['dog']
 print(gensim_vector.shape)
 print (gensim_vector)
-# ##for 2D
-# test = gensim_vector.reshape(1, -1)
-# print (test)
