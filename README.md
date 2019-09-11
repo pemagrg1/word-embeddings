@@ -19,3 +19,7 @@ fastText is a library for learning of word embeddings and text classification cr
 <br>
 download the pretrained model from: https://github.com/facebookresearch/fastText/blob/master/docs/pretrained-vectors.md
 
+#### TO DO
+1. Text similarity using embeddings
+2. Text classification using embeddings
+3. Embeddings Visualization
