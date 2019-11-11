@@ -103,7 +103,7 @@ class gensim_mode:
         print(gensim_vector)
 
     def load_savedModel(self,filename):
-        model = gensim.models.KeyedVectors.load_word2vec_format(filename, binary=False)
+        model = gensim.models.KeyedVectors.load(filename)
         result = model.most_similar(positive=['कम्पनी', 'स्कूल'],
                                     negative=['कम्पनी'], topn=1)
         print(result)
