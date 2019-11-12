@@ -8,3 +8,5 @@
 .idea
 .gitignore
 .ipynb_checkpoints
+/models
+/data
