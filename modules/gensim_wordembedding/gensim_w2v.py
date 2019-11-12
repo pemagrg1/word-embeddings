@@ -74,28 +74,25 @@ class gensim_mode:
                         epochs=30, report_delay=1)
         w2v_model.init_sims(replace=True)
 
-        # print(w2v_model.wv.most_similar(positive=['economy']))
-        # print(w2v_model.wv.similarity('video', 'gaming'))
-        # model_path = "/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models"
-        # pickle.dump(w2v_model, open(model_path, 'wb'))
-        # self.tsne_plot(w2v_model)
+        model_path = "/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models"
+        pickle.dump(w2v_model, open(model_path, 'wb'))
+        self.tsne_plot(w2v_model)
         return w2v_model
 
 
     def train_gensim(self,type,data_or_path):
         """
-
         :param type:
-            text8 :
-            google bin:
-            sentence_list:
-            pickle:
-            csv :
+            text8 : if you have a text file with full text, you can pass type as "text" and the text file path.
+            google bin: you can download the google bin file and pass type as google_bin and the path.
+            sentence_list: you can train your own list of sentences.
+            pickle: if saved pickle file is there, you can pass type as pickle and the path.
+            csv : in the csv, "text" column is taken for word embedding.
         :param data:
             text8 : 'data/en_w2v.txt'
             google bin: "GoogleNews-vectors-negative300.bin.gz"
             sentence_list: list of sentences
-            pickle:
+            pickle: the saved pickle file after training.
             csv: 'data/bbc-text.csv'
         :return: model
         """
