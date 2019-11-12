@@ -14,7 +14,7 @@ def load_glove_model(gloveFile):
     return model
 
 #------Load the model
-glove = load_glove_model('/media/ekbana/ekbana500/glove.6B.100d.txt')
+glove = load_glove_model('glove.6B.100d.txt')
 #------transform simple text to vectors
 text = "hello!! my name is Pema"
 vectors= glove.get(text, np.zeros(50))
