@@ -46,7 +46,6 @@ class gensim_mode:
                          va='bottom')
         plt.show()
 
-
     def clean_text(self,text):
         '''Make text lowercase, remove text in square brackets, remove punctuation and remove words containing numbers.'''
         text = text.lower()
@@ -64,10 +63,7 @@ class gensim_mode:
             sent.append(word.lemma_)
         return " ".join(sent)
 
-    def train_csv(self):
-        pass
-
-    def train_sent_list(self,sentences):
+    def create_embedding(self,sentences):
         w2v_model = Word2Vec(min_count=100,
                              window=5,
                              size=100,
@@ -80,58 +76,66 @@ class gensim_mode:
 
         # print(w2v_model.wv.most_similar(positive=['economy']))
         # print(w2v_model.wv.similarity('video', 'gaming'))
-        model_path = "/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models"
-        pickle.dump(w2v_model, open(model_path, 'wb'))
-
-        self.tsne_plot(w2v_model)
+        # model_path = "/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models"
+        # pickle.dump(w2v_model, open(model_path, 'wb'))
+        # self.tsne_plot(w2v_model)
         return w2v_model
 
-    def train_text(self):
-        sentences = word2vec.Text8Corpus(
-            '/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/data/nepali_w2v.txt')
-        model = word2vec.Word2Vec(sentences, size=200, window=3, min_count=5)
-        model.save(
-            '/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models/nep_word2Vec_small.w2v')
+
+    def train_gensim(self,type,data_or_path):
+        """
+
+        :param type:
+            text8 :
+            google bin:
+            sentence_list:
+            pickle:
+            csv :
+        :param data:
+            text8 : 'data/en_w2v.txt'
+            google bin: "GoogleNews-vectors-negative300.bin.gz"
+            sentence_list: list of sentences
+            pickle:
+            csv: 'data/bbc-text.csv'
+        :return: model
+        """
+        model = None
+
+        if type == "text":
+            sentences = word2vec.Text8Corpus(data_or_path)
+            model = self.create_embedding(sentences)
+
+        elif type == "sentence_list":
+            sentences = data_or_path
+            model = self.create_embedding(sentences)
+
+        elif type == "google_bin":
+            gensim_model = data_or_path
+            model = gensim.models.KeyedVectors.load_word2vec_format(
+                gensim_model, binary=True, limit=100000)
+
+        elif type == "pickle":
+            model = gensim.models.KeyedVectors.load(data_or_path)
+
+        elif type == "csv":
+            df = pd.read_csv(data_or_path)
+            df_clean = pd.DataFrame(
+                df.text.apply(lambda x: self.clean_text(x)))
+            nlp = spacy.load('en', disable=['ner',
+                                            'parser'])  # disabling Named Entity Recognition for speed
+            df_clean["text_lemmatize"] = df_clean.apply(
+                lambda x: self.lemmatizer(x['text'], nlp), axis=1)
+            df_clean['text_lemmatize_clean'] = df_clean[
+                'text_lemmatize'].str.replace('-PRON-', '')
+            sentences = [row.split() for row in
+                         df_clean['text_lemmatize_clean']]
+            model = self.create_embedding(sentences)
+
+        print(model.wv.most_similar(positive=['economy']))
+        print(model.wv.similarity('video', 'gaming'))
         return model
 
-    def load_googlebin(self):
-        gensim_model = "/media/ekbana/ekbana500/Pema/datasets/GoogleNews-vectors-negative300.bin.gz"
-        gensim_model = gensim.models.KeyedVectors.load_word2vec_format(
-            gensim_model, binary=True, limit=100000)
-        gensim_vector = gensim_model['dog']
-        print(gensim_vector.shape)
-        print(gensim_vector)
 
-    def load_savedModel(self,filename):
-        model = gensim.models.KeyedVectors.load(filename)
-        result = model.most_similar(positive=['कम्पनी', 'स्कूल'],
-                                    negative=['कम्पनी'], topn=1)
-        print(result)
-
-
-    def load_pickle(self,model_path):
-        model = pickle.load(open(model_path, 'rb'))
-        return model
-
-    def test(self):
-        df = pd.read_csv('/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/data/bbc-text.csv')
-        df_clean = pd.DataFrame(df.text.apply(lambda x: self.clean_text(x)))
-        nlp = spacy.load('en', disable=['ner', 'parser']) # disabling Named Entity Recognition for speed
-
-        df_clean["text_lemmatize"] =  df_clean.apply(lambda x: self.lemmatizer(x['text'],nlp), axis=1)
-        df_clean['text_lemmatize_clean'] = df_clean['text_lemmatize'].str.replace('-PRON-', '')
-
-        sentences = [row.split() for row in df_clean['text_lemmatize_clean']]
-        w2v_model = self.train_sent_list(sentences)
-        print(w2v_model.wv.most_similar(positive=['economy']))
-        print(w2v_model.wv.similarity('video', 'gaming'))
-
-
-
-c = gensim_mode()
-# c.test()
-# c.train_text()
-c.load_savedModel('/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models/nep_word2Vec_small.w2v')
 
 
 
