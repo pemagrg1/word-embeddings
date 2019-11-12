@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 
 STOPWORDS = set(stopwords.words('english'))
 
-class gensim_mode:
+class gensim_model:
     def __init__(self):
         pass
 
@@ -80,7 +80,7 @@ class gensim_mode:
         return w2v_model
 
 
-    def train_gensim(self,type,data_or_path):
+    def gensim_embedding(self,type,data_or_path):
         """
         :param type:
             text8 : if you have a text file with full text, you can pass type as "text" and the text file path.
@@ -135,6 +135,6 @@ class gensim_mode:
 
 # TEST
 #
-# c = gensim_mode()
-# c.train_gensim(type="csv",data_or_path="word-embeddings/data/bbc-text.csv")
-# c.train_gensim(type="pickle",data_or_path="word-embeddings/models/en.model")
+# c = gensim_model()
+# c.gensim_embedding(type="csv",data_or_path="word-embeddings/data/bbc-text.csv")
+# c.gensim_embedding(type="pickle",data_or_path="word-embeddings/models/en.model")
