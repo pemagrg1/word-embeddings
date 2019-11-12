@@ -74,7 +74,7 @@ class gensim_mode:
                         epochs=30, report_delay=1)
         w2v_model.init_sims(replace=True)
 
-        model_path = "/media/ekbana/ekbana500/NLP TEAM/mygithub/word-embeddings/models"
+        model_path = "word-embeddings/models/en.model"
         pickle.dump(w2v_model, open(model_path, 'wb'))
         self.tsne_plot(w2v_model)
         return w2v_model
@@ -133,8 +133,8 @@ class gensim_mode:
         return model
 
 
-
-
-
-
-
+# TEST
+#
+# c = gensim_mode()
+# c.train_gensim(type="csv",data_or_path="word-embeddings/data/bbc-text.csv")
+# c.train_gensim(type="pickle",data_or_path="word-embeddings/models/en.model")
