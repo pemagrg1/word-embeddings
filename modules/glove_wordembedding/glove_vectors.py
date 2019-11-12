@@ -1,4 +1,3 @@
-#####-------------GLOVE------------
 import codecs
 import numpy as np
 
