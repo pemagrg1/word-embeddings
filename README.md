@@ -1,3 +1,5 @@
+Created Date: 12Feb 2019
+
 # word-embeddings
 Embedding is the process of converting a word or a piece of text to a continuos vector space of real number, usually in low dimension.
 
